@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -36,11 +37,15 @@ class _MyHomePageState extends State<MyHomePage> {
   File? image;
 
   Future pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) return;
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
 
-    final imageTemporary = File(image.path);
-    this.image = imageTemporary;
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
   }
 
   @override
@@ -56,7 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               Spacer(),
-              Icon(Icons.face_outlined, size: 120),
+              image != null
+                  ? Image.file(image!)
+                  : Icon(Icons.face_outlined, size: 120),
               const SizedBox(height: 24),
               Text('Image Picker demo',
                   textAlign: TextAlign.center,
