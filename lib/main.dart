@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,27 +33,52 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  File? image;
+
+  Future pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    this.image = imageTemporary;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Colors.lightGreen[200],
+      /*appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            buildButton(
-              title: 'Pick Gallery',
-              icon: Icons.image_outlined,
-              onClicked: () {},
-            ),
-            const SizedBox(height: 24),
-            buildButton(
-              title: 'Pick Camera',
-              icon: Icons.camera_alt_outlined,
-              onClicked: () {},
-            ),
-          ],
+      ),*/
+      body: Container(
+        padding: EdgeInsets.all(22),
+        child: Center(
+          child: Column(
+            children: [
+              Spacer(),
+              Icon(Icons.face_outlined, size: 120),
+              const SizedBox(height: 24),
+              Text('Image Picker demo',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Spacer(),
+              buildButton(
+                title: 'Pick Gallery',
+                icon: Icons.image_outlined,
+                onClicked: () => pickImage(),
+              ),
+              const SizedBox(height: 24),
+              buildButton(
+                title: 'Pick Camera',
+                icon: Icons.camera_alt_outlined,
+                onClicked: () {},
+              ),
+              SizedBox(height: 40)
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
