@@ -36,9 +36,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   File? image;
 
-  Future pickImage() async {
+  Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
       final imageTemporary = File(image.path);
@@ -62,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Spacer(),
               image != null
-                  ? Image.file(image!)
+                  ? Image.file(image!,
+                      width: 180, height: 150, fit: BoxFit.cover)
                   : Icon(Icons.face_outlined, size: 120),
               const SizedBox(height: 24),
               Text('Image Picker demo',
@@ -75,15 +76,15 @@ class _MyHomePageState extends State<MyHomePage> {
               buildButton(
                 title: 'Pick Gallery',
                 icon: Icons.image_outlined,
-                onClicked: () => pickImage(),
+                onClicked: () => pickImage(ImageSource.gallery),
               ),
               const SizedBox(height: 24),
               buildButton(
                 title: 'Pick Camera',
                 icon: Icons.camera_alt_outlined,
-                onClicked: () {},
+                onClicked: () => pickImage(ImageSource.camera),
               ),
-              SizedBox(height: 40)
+              SizedBox(height: 60)
             ],
           ),
         ),
