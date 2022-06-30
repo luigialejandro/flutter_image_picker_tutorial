@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_picker_tutorial/record_video.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -78,13 +79,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.image_outlined,
                 onClicked: () => pickImage(ImageSource.gallery),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               buildButton(
                 title: 'Pick Camera',
                 icon: Icons.camera_alt_outlined,
                 onClicked: () => pickImage(ImageSource.camera),
               ),
-              SizedBox(height: 60)
+              SizedBox(height: 16),
+              buildButton(
+                title: 'Explore getVideo method',
+                icon: Icons.videocam_outlined,
+                onClicked: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => RecordVideo(),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
